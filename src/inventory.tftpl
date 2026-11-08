@@ -1,0 +1,19 @@
+[webservers]
+%{ for vm in web_vms ~}
+${vm.name} ansible_host=${vm.network_interface[0].nat_ip_address} fqdn=${vm.fqdn}
+%{ endfor ~}
+
+[databases]
+%{ for vm in db_vms ~}
+${vm.name} ansible_host=${vm.network_interface[0].nat_ip_address} fqdn=${vm.fqdn}
+%{ endfor ~}
+
+[storage]
+%{ for vm in storage_vm ~}
+${vm.name} ansible_host=${vm.network_interface[0].nat_ip_address} fqdn=${vm.fqdn}
+%{ endfor ~}
+
+[all:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=~/.ssh/id_rsa
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
